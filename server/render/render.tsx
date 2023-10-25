@@ -4,8 +4,15 @@ import { Request, Response } from "express";
 import React from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
+import { Provider } from "react-redux";
+import { initStore } from "../../store/store";
+import { getLogin } from "../../store/Login/action";
+import { render } from "../../client/ssr";
+import AuthApi from "../../api/AuthAPI";
 
-export default (req: Request, res: Response) => {
+const loginApi = new AuthApi();
+
+export default async (req: Request, res: Response) => {
   const { devMiddleware } = res.locals.webpack;
   const jsonWebpackStats = devMiddleware.stats.toJson();
   const { assetsByChunkName } = jsonWebpackStats;
@@ -24,17 +31,29 @@ export default (req: Request, res: Response) => {
 
   const App = require("../../../bundle/ssr.client.js").default;
 
-  const reactHtml = ReactDOMServer.renderToString(
-    <StaticRouter location={req.url}>
-      <App />
-    </StaticRouter>
-  );
+  console.log(`server !!!!!!!!`);
+  // const store = initStore({
+  //   Login: { loading: true, user: { first_name: "test" } },
+  // });
+
+  const [store, reactHtml] = await render(req.url);
+
+  // const reactHtml = ReactDOMServer.renderToString(
+  //   <StaticRouter location={req.url}>
+  //     <Provider store={store}>
+  //       <App />
+  //     </Provider>
+  //   </StaticRouter>
+  // );
 
   html = html.replace(
     '<div id="root"></div>',
     `
-                <div id="root">${reactHtml}</div>
-                <script defer src="${script}"></script>
+    <script>
+    window.__PRELOADED_STATE__=${JSON.stringify(store).replace(/</g, "\\u003c")}
+    </script>
+    <div id="root">${reactHtml}</div>
+    <script defer src="${script}"></script>
   `
   );
 
