@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 const HomePage: React.FC = () => {
+  const state = useTypedSelector((state) => state.Login);
+
+  useEffect(() => {
+    console.log(`state `, state);
+    // GetLogin({ login: "admin12345", password: "Andrew123" });
+  }, []);
+
   return (
     <>
       <Link to="/profile">Profile</Link>
