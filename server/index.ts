@@ -1,7 +1,7 @@
 import express from 'express';
 import render from './render';
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(render());

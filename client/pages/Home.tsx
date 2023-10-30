@@ -1,12 +1,33 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import useAction from "../hooks/useAction";
+import axios from "axios";
 
 const HomePage: React.FC = () => {
   const state = useTypedSelector((state) => state.Login);
-
+  const { OauthLogin } = useAction();
+  const [searchParams] = useSearchParams();
   useEffect(() => {
-    console.log(`state `, state);
+    const code = searchParams.get("code");
+    if (code) {
+      const foo = async () => {
+        const response = await axios.get("https://login.yandex.ru/info?", {
+          headers: {
+            Authorization: `OAuth ${code}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+            "Access-Control-Allow-Headers":
+              "Content-Type, Authorization, X-Requested-With",
+          },
+
+          withCredentials: true,
+        });
+        console.log(`response `, response);
+      };
+      foo();
+      // OauthLogin(code);
+    }
     // GetLogin({ login: "admin12345", password: "Andrew123" });
   }, []);
 

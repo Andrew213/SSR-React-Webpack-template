@@ -1,16 +1,17 @@
+import { REDIRECT_URI } from "../constatns";
 import { User } from "../types/user";
 import API from "./api";
 
-export default class AuthAPI extends API {
+export  class AuthAPI extends API {
   constructor() {
     super("/auth");
   }
 
   singin(data: {login: string, password: string | number}) {
-    console.log(`data in sign in `, data)
     return this.http.post("/signin", JSON.stringify(data));
   }
 
+ 
   // singup(data: ISignUpData): Promise<any> {
   //   return this.http.post("/signup", JSON.stringify(data));
   // }
@@ -21,5 +22,21 @@ export default class AuthAPI extends API {
 
   getUser() {
     return this.http.get<User>("/user");
+  }
+}
+
+
+export  class OauthAPI extends API{
+  constructor() {
+    super("/oauth");
+  }
+
+
+  getServiceId() {
+    return this.http.get<{service_id: string}>("/yandex/service-id")
+  }
+
+  OAuth(code:string){
+    return this.http.post("/yandex", JSON.stringify({code, redirect_uri: REDIRECT_URI}))
   }
 }

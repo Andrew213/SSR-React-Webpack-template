@@ -5,7 +5,6 @@ enum METHOD {
     PATCH = "PATCH",
     DELETE = "DELETE",
   }
-  
   type Options = {
     method: METHOD;
     data?: any;
@@ -27,8 +26,8 @@ enum METHOD {
       return this.request(this.endpoint + path, { ...options, method: METHOD.GET });
     }
   
-    public post<Response>(path: string, data?: any): Promise<Response> {
-      return this.request(this.endpoint + path, { data, method: METHOD.POST });
+    public post<Response>(path: string, data?: any, headers?: Record<string, string>): Promise<Response> {
+      return this.request(this.endpoint + path, { data, method: METHOD.POST, headers });
     }
   
     public put<Response>(
