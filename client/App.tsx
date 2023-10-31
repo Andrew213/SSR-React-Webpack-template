@@ -1,37 +1,29 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home";
 import ProfilePage from "./pages/Profile";
-import useAction from "./hooks/useAction";
-import { OauthAPI } from "../api/AuthAPI";
 import { REDIRECT_URI } from "../constatns";
-
-const oauthApi = new OauthAPI();
+import flow from "lodash.flow";
 
 const App: React.FC = () => {
-  const { OauthLogin } = useAction();
-
-  const [serviceId, setServiceId] = useState<string>();
-
   useEffect(() => {
-    const foo = async () => {
-      const { service_id } = await oauthApi.getServiceId();
+    function cube(number: number) {
+      return number * number * number;
+    }
 
-      setServiceId(service_id);
-    };
+    function add(number1: number, number2: number) {
+      return number1 + number2;
+    }
 
-    foo();
+    const multiplycube = flow([add, cube]);
+
+    console.log(multiplycube(2, 3));
   }, []);
+  const href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=d914a43386f04ae0b20ac72dd44f89de&redirect_uri=${REDIRECT_URI}`;
 
-  const getYandexOauthButton = useCallback(() => {
-    // const href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${serviceId}&redirect_uri=${REDIRECT_URI}`;
-    const href = `https://oauth.yandex.ru/authorize?response_type=code&client_id=d914a43386f04ae0b20ac72dd44f89de&redirect_uri=${REDIRECT_URI}`;
-
-    return <Link to={href}>YANDEX OAUTH</Link>;
-  }, [serviceId]);
   return (
     <>
-      {serviceId && getYandexOauthButton()}
+      <Link to={href}>YANDEX OAUTH</Link>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />

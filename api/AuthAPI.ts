@@ -26,17 +26,29 @@ export  class AuthAPI extends API {
 }
 
 
+// export  class OauthAPI extends API{
+//   constructor() {
+//     super("/oauth");
+//   }
+
+
+//   getServiceId() {
+//     return this.http.get<{service_id: string}>("/yandex/service-id")
+//   }
+
+//   OAuth(code:string){
+//     return this.http.post("/yandex", JSON.stringify({code, redirect_uri: REDIRECT_URI}))
+//   }
+// }
+
 export  class OauthAPI extends API{
   constructor() {
-    super("/oauth");
+    super("/token");
   }
 
 
-  getServiceId() {
-    return this.http.get<{service_id: string}>("/yandex/service-id")
-  }
 
   OAuth(code:string){
-    return this.http.post("/yandex", JSON.stringify({code, redirect_uri: REDIRECT_URI}))
+    return this.http.post(`?grant_type=authorization_code&code=${code}`, JSON.stringify({grant_type:"authorization_code", code}))
   }
 }

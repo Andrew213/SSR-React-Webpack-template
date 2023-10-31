@@ -3,6 +3,9 @@ import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import useAction from "../hooks/useAction";
 import axios from "axios";
+import { OauthAPI } from "../../api/AuthAPI";
+
+const api = new OauthAPI();
 
 const HomePage: React.FC = () => {
   const state = useTypedSelector((state) => state.Login);
@@ -12,17 +15,18 @@ const HomePage: React.FC = () => {
     const code = searchParams.get("code");
     if (code) {
       const foo = async () => {
-        const response = await axios.get("https://login.yandex.ru/info?", {
-          headers: {
-            Authorization: `OAuth ${code}`,
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-            "Access-Control-Allow-Headers":
-              "Content-Type, Authorization, X-Requested-With",
-          },
-
-          withCredentials: true,
-        });
+        const response = await api.OAuth(code);
+        // const response = await axios.post(
+        //   `https://oauth.yandex.ru/token?grant_type=authorization_code&code=${code}`,
+        //   {
+        //     data: {
+        //       grant_type: "authorization_code",
+        //     },
+        //     headers: {
+        //       "Content-type": "application/x-www-form-urlencoded",
+        //     },
+        //   }
+        // );
         console.log(`response `, response);
       };
       foo();

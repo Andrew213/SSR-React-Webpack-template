@@ -43,13 +43,13 @@ export const oauthLogin = (code: string) => {
     dispatch: ThunkDispatch<UserStateT, void, UserAction>,
     getState: () => RootState
   ) => {
-    const {service_id} = await oauthAPI.getServiceId();
+    // const {service_id} = await oauthAPI.getServiceId();
 
-    if(service_id){
-      const jopa = await oauthAPI.OAuth(code);
+    // if(service_id){
+    //   const jopa = await oauthAPI.OAuth(code);
 
-      console.log(`jopa `, jopa)
-    }
+    //   console.log(`jopa `, jopa)
+    // }
     // window.location.replace(getYandexUrl(clientId))
 
 
