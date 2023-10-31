@@ -5,7 +5,6 @@ enum METHOD {
     PATCH = "PATCH",
     DELETE = "DELETE",
   }
-  
   type Options = {
     method: METHOD;
     data?: any;
@@ -15,8 +14,8 @@ enum METHOD {
   type OptionsWithoutMethod = Omit<Options, "method">;
   
   export default class HTTPTransport {
-    static API_URL = "https://ya-praktikum.tech/api/v2";
-  
+    // static API_URL = "https://ya-praktikum.tech/api/v2";
+    static API_URL = "https://oauth.yandex.ru";
     protected endpoint: string;
   
     constructor(endpoint: string) {
@@ -27,8 +26,8 @@ enum METHOD {
       return this.request(this.endpoint + path, { ...options, method: METHOD.GET });
     }
   
-    public post<Response>(path: string, data?: any): Promise<Response> {
-      return this.request(this.endpoint + path, { data, method: METHOD.POST });
+    public post<Response>(path: string, data?: any, headers?: Record<string, string>): Promise<Response> {
+      return this.request(this.endpoint + path, { data, method: METHOD.POST, headers });
     }
   
     public put<Response>(
@@ -56,13 +55,15 @@ enum METHOD {
         xhr.onload = function () {
           resolve(xhr.response);
         };
-        if (headers) {
-          Object.entries(headers).forEach(([key, value]) => {
-            xhr.setRequestHeader(key, value);
-          });
-        } else {
-          xhr.setRequestHeader("Content-Type", "application/json");
-        }
+        // if (headers) {
+        //   Object.entries(headers).forEach(([key, value]) => {
+        //     xhr.setRequestHeader(key, value);
+        //   });
+        // } else {
+        //   xhr.setRequestHeader("Content-Type", "application/json");
+        // }
+
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
   
         xhr.onabort = reject;
         xhr.onerror = reject;
@@ -76,7 +77,7 @@ enum METHOD {
         };
   
         xhr.withCredentials = true;
-        xhr.responseType = "json";
+        // xhr.responseType = "json";
   
         if (method === METHOD.GET || !data) {
           xhr.send();

@@ -8,9 +8,6 @@ import { Provider } from "react-redux";
 import { initStore } from "../../store/store";
 import { getLogin } from "../../store/Login/action";
 import { render } from "../../client/ssr";
-import AuthApi from "../../api/AuthAPI";
-
-const loginApi = new AuthApi();
 
 export default async (req: Request, res: Response) => {
   const { devMiddleware } = res.locals.webpack;
@@ -31,7 +28,6 @@ export default async (req: Request, res: Response) => {
 
   const App = require("../../../bundle/ssr.client.js").default;
 
-  console.log(`server !!!!!!!!`);
   // const store = initStore({
   //   Login: { loading: true, user: { first_name: "test" } },
   // });

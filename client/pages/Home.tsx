@@ -1,12 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import React, { useEffect } from "react";
 import { useTypedSelector } from "../hooks/useTypedSelector";
+import useAction from "../hooks/useAction";
+import axios from "axios";
+import { OauthAPI } from "../../api/AuthAPI";
+
+const api = new OauthAPI();
 
 const HomePage: React.FC = () => {
   const state = useTypedSelector((state) => state.Login);
-
+  const { OauthLogin } = useAction();
+  const [searchParams] = useSearchParams();
   useEffect(() => {
-    console.log(`state `, state);
+    const code = searchParams.get("code");
+    if (code) {
+      const foo = async () => {
+        const response = await api.OAuth(code);
+        // const response = await axios.post(
+        //   `https://oauth.yandex.ru/token?grant_type=authorization_code&code=${code}`,
+        //   {
+        //     data: {
+        //       grant_type: "authorization_code",
+        //     },
+        //     headers: {
+        //       "Content-type": "application/x-www-form-urlencoded",
+        //     },
+        //   }
+        // );
+        console.log(`response `, response);
+      };
+      foo();
+      // OauthLogin(code);
+    }
     // GetLogin({ login: "admin12345", password: "Andrew123" });
   }, []);
 

@@ -1,23 +1,24 @@
-import { User } from '../../types/user';
+import { User } from "../../types/user";
 
 export interface requestLoginI {
-    type: "REQUEST_LOGIN";
+  type: "REQUEST_LOGIN";
 }
 
-
+export interface requestOauthI {
+  type: "REQUEST_LOGIN";
+}
 
 export interface receiveLoginI {
-    type: "RECEIVE_LOGIN";
+  type: "RECEIVE_LOGIN";
 }
-
 
 export interface receiveUserI {
-    type: "RECEIVE_USER";
-    user: User
+  type: "RECEIVE_USER";
+  user: User;
 }
 
-
 export type UserAction =
-    | requestLoginI
-    | receiveLoginI
-    | receiveUserI
+  | requestLoginI
+  | receiveLoginI
+  | receiveUserI
+  | requestOauthI;
