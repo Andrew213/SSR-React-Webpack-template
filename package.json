@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:server",
+    "build": "npm i && yarn build:server",
     "start": "NODE_ENV=development concurrently \"yarn watch:ssr\" \"node ./dist/server/index.js\"",
     "build:server": "tsc --project server",
     "build:ssr": "webpack --config ./webpack/configs/ssr.config.ts",
